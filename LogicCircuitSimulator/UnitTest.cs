@@ -21,31 +21,31 @@ namespace LogicCircuitSimulator
             //U AND U
             result = U & U;
             Require.That(result.Value == LogicValue.UNINITIALIZED, "Result of U AND U isn't U.");
-            
+
             //U AND 0
             result = U & l_0;
             Require.That(result.Value == LogicValue.LOGIC_0, "Result of U AND 0 isn't 0.");
-            
+
             //U AND 1
             result = U & l_1;
             Require.That(result.Value == LogicValue.UNINITIALIZED, "Result of U AND 1 isn't U.");
-            
+
             //0 AND U
             result = l_0 & U;
             Require.That(result.Value == LogicValue.LOGIC_0, "Result of 0 AND U isn't 0.");
-            
+
             //0 AND 0
             result = l_0 & l_0;
             Require.That(result.Value == LogicValue.LOGIC_0, "Result of 0 AND 0 isn't 0.");
-           
+
             //0 AND 1
             result = l_0 & l_1;
             Require.That(result.Value == LogicValue.LOGIC_0, "Result of 0 AND 1 isn't 0.");
-            
+
             //1 AND U
             result = l_1 & U;
             Require.That(result.Value == LogicValue.UNINITIALIZED, "Result of 1 AND U isn't U.");
-            
+
             //1 AND 0
             result = l_1 & l_0;
             Require.That(result.Value == LogicValue.LOGIC_0, "Result of 1 AND 0 isn't 0.");
@@ -67,35 +67,35 @@ namespace LogicCircuitSimulator
             //U OR U
             result = U | U;
             Require.That(result.Value == LogicValue.UNINITIALIZED, "Result of U OR U isn't U.");
-            
+
             //U OR 0
             result = U | l_0;
             Require.That(result.Value == LogicValue.UNINITIALIZED, "Result of U OR 0 isn't U.");
-            
+
             //U OR 1
             result = U | l_1;
             Require.That(result.Value == LogicValue.LOGIC_1, "Result of U OR 1 isn't 1.");
-            
+
             //0 OR U
             result = l_0 | U;
             Require.That(result.Value == LogicValue.UNINITIALIZED, "Result of 0 OR U isn't U.");
-            
+
             //0 OR 0
             result = l_0 | l_0;
             Require.That(result.Value == LogicValue.LOGIC_0, "Result of 0 OR 0 isn't 0.");
-            
+
             //0 OR 1
             result = l_0 | l_1;
             Require.That(result.Value == LogicValue.LOGIC_1, "Result of 0 OR 1 isn't 1.");
-           
+
             //1 OR U
             result = l_1 | U;
             Require.That(result.Value == LogicValue.LOGIC_1, "Result of 1 OR U isn't 1.");
-            
+
             //1 OR 0
             result = l_1 | l_0;
             Require.That(result.Value == LogicValue.LOGIC_1, "Result of 1 OR 0 isn't 1.");
-            
+
             //1 OR 1
             result = l_1 | l_1;
             Require.That(result.Value == LogicValue.LOGIC_1, "Result of 1 OR 1 isn't 1.");
@@ -112,35 +112,35 @@ namespace LogicCircuitSimulator
             //U XOR U
             result = U ^ U;
             Require.That(result.Value == LogicValue.UNINITIALIZED, "Result of U XOR U isn't U.");
-            
+
             //U XOR 0
             result = U ^ l_0;
             Require.That(result.Value == LogicValue.UNINITIALIZED, "Result of U XOR 0 isn't U.");
-           
+
             //U XOR 1
             result = U ^ l_1;
             Require.That(result.Value == LogicValue.UNINITIALIZED, "Result of U XOR 1 isn't U.");
-           
+
             //0 XOR U
             result = l_0 ^ U;
             Require.That(result.Value == LogicValue.UNINITIALIZED, "Result of 0 XOR U isn't U.");
-            
+
             //0 XOR 0
             result = l_0 ^ l_0;
             Require.That(result.Value == LogicValue.LOGIC_0, "Result of 0 XOR 0 isn't 0.");
-           
+
             //0 XOR 1
             result = l_0 ^ l_1;
             Require.That(result.Value == LogicValue.LOGIC_1, "Result of 0 XOR 1 isn't 1.");
-          
+
             //1 XOR U
             result = l_1 ^ U;
             Require.That(result.Value == LogicValue.UNINITIALIZED, "Result of 1 XOR U isn't U.");
-     
+
             //1 XOR 0
             result = l_1 ^ l_0;
             Require.That(result.Value == LogicValue.LOGIC_1, "Result of 1 XOR 0 isn't 1.");
-           
+
             //1 XOR 1
             result = l_1 ^ l_1;
             Require.That(result.Value == LogicValue.LOGIC_0, "Result of 1 XOR 1 isn't 0.");
@@ -157,7 +157,7 @@ namespace LogicCircuitSimulator
             //NOT U
             result = !U;
             Require.That(result.Value == LogicValue.UNINITIALIZED, "Result of NOT U isn't U.");
-            
+
             //NOT 0
             result = !l_0;
             Require.That(result.Value == LogicValue.LOGIC_1, "Result of NOT 0 isn't 1.");
@@ -295,8 +295,8 @@ namespace LogicCircuitSimulator
 
             cir.RestartSimulation();
             VerifyStates(
-                x1_out, "U", x2_out, "U", x3_out, "U", 
-                nand_in0, "U", nand_in1, "U", nand_out, "U", 
+                x1_out, "U", x2_out, "U", x3_out, "U",
+                nand_in0, "U", nand_in1, "U", nand_out, "U",
                 nor_in0, "U", nor_in1, "U", nor_out, "U",
                 y1_in, "U", y1.SimulationResult, "U");
 
@@ -329,6 +329,112 @@ namespace LogicCircuitSimulator
                y1_in, "1", y1.SimulationResult, "1");
 
             Console.WriteLine("TestCase_Nand_Nor_GatesSimulation passed.");
+        }
+
+        public static void TestCase_Xnor_Xor_GatesSimulation()
+        {
+            void VerifyStates(Pin x1_out_pin, string x1_out_val,
+                              Pin x2_out_pin, string x2_out_val,
+                              Pin x3_out_pin, string x3_out_val,
+                              Pin xnor_in0_pin, string xnor_in0_val,
+                              Pin xnor_in1_pin, string xnor_in1_val,
+                              Pin xnor_out_pin, string xnor_out_val,
+                              Pin xor_in0_pin, string xor_in0_val,
+                              Pin xor_in1_pin, string xor_in1_val,
+                              Pin xor_out_pin, string xor_out_val,
+                              Pin y1_in_pin, string y1_in_val,
+                              Logic y1_res_real, string y1_res_exp)
+            {
+                Require.That(x1_out_pin.State.Value == Logic.StringToLogicValue(x1_out_val));
+                Require.That(x2_out_pin.State.Value == Logic.StringToLogicValue(x2_out_val));
+                Require.That(x3_out_pin.State.Value == Logic.StringToLogicValue(x3_out_val));
+
+                Require.That(xnor_in0_pin.State.Value == Logic.StringToLogicValue(xnor_in0_val));
+                Require.That(xnor_in1_pin.State.Value == Logic.StringToLogicValue(xnor_in1_val));
+                Require.That(xnor_out_pin.State.Value == Logic.StringToLogicValue(xnor_out_val));
+
+                Require.That(xor_in0_pin.State.Value == Logic.StringToLogicValue(xor_in0_val));
+                Require.That(xor_in1_pin.State.Value == Logic.StringToLogicValue(xor_in1_val));
+                Require.That(xor_out_pin.State.Value == Logic.StringToLogicValue(xor_out_val));
+
+                Require.That(y1_in_pin.State.Value == Logic.StringToLogicValue(y1_in_val));
+                Require.That(y1_res_real.Value == Logic.StringToLogicValue(y1_res_exp));
+            }
+
+            Circuit cir = new Circuit();
+            InTerminal x1 = new InTerminal();
+            cir.AddElement(x1);
+            InTerminal x2 = new InTerminal();
+            cir.AddElement(x2);
+            InTerminal x3 = new InTerminal();
+            cir.AddElement(x3);
+
+            XNOR xnor = new XNOR();
+            cir.AddElement(xnor);
+
+            XOR xor = new XOR();
+            cir.AddElement(xor);
+
+            OutTerminal y1 = new OutTerminal();
+            cir.AddElement(y1);
+
+            Pin x1_out = x1.GetPin(PinSide.OUTPUT, 0);
+            Pin x2_out = x2.GetPin(PinSide.OUTPUT, 0);
+            Pin x3_out = x3.GetPin(PinSide.OUTPUT, 0);
+            Pin xnor_in0 = xnor.GetPin(PinSide.INPUT, 0);
+            Pin xnor_in1 = xnor.GetPin(PinSide.INPUT, 1);
+            Pin xnor_out = xnor.GetPin(PinSide.OUTPUT, 0);
+            Pin xor_in0 = xor.GetPin(PinSide.INPUT, 0);
+            Pin xor_in1 = xor.GetPin(PinSide.INPUT, 1);
+            Pin xor_out = xor.GetPin(PinSide.OUTPUT, 0);
+            Pin y1_in = y1.GetPin(PinSide.INPUT, 0);
+
+            cir.Connect(x1_out, xnor_in0);
+            cir.Connect(x2_out, xnor_in1);
+            cir.Connect(xnor_out, xor_in0);
+            cir.Connect(x3_out, xor_in1);
+            cir.Connect(xor_out, y1_in);
+
+            x1.SimulationInputValue = new Logic(LogicValue.LOGIC_0);
+            x2.SimulationInputValue = new Logic(LogicValue.LOGIC_0);
+            x3.SimulationInputValue = new Logic(LogicValue.LOGIC_0);
+
+            cir.RestartSimulation();
+            VerifyStates(
+                x1_out, "U", x2_out, "U", x3_out, "U",
+                xnor_in0, "U", xnor_in1, "U", xnor_out, "U",
+                xor_in0, "U", xor_in1, "U", xor_out, "U",
+                y1_in, "U", y1.SimulationResult, "U");
+
+            cir.NextMoment();
+            VerifyStates(
+               x1_out, "0", x2_out, "0", x3_out, "0",
+               xnor_in0, "0", xnor_in1, "0", xnor_out, "U",
+               xor_in0, "U", xor_in1, "0", xor_out, "U",
+               y1_in, "U", y1.SimulationResult, "U");
+
+            cir.NextMoment();
+            VerifyStates(
+               x1_out, "0", x2_out, "0", x3_out, "0",
+               xnor_in0, "0", xnor_in1, "0", xnor_out, "1",
+               xor_in0, "1", xor_in1, "0", xor_out, "U",
+               y1_in, "U", y1.SimulationResult, "U");
+
+            cir.NextMoment();
+            VerifyStates(
+               x1_out, "0", x2_out, "0", x3_out, "0",
+               xnor_in0, "0", xnor_in1, "0", xnor_out, "1",
+               xor_in0, "1", xor_in1, "0", xor_out, "1",
+               y1_in, "1", y1.SimulationResult, "U");
+
+            cir.NextMoment();
+            VerifyStates(
+               x1_out, "0", x2_out, "0", x3_out, "0",
+               xnor_in0, "0", xnor_in1, "0", xnor_out, "1",
+               xor_in0, "1", xor_in1, "0", xor_out, "1",
+               y1_in, "1", y1.SimulationResult, "1");
+
+            Console.WriteLine("TestCase_Xnor_Xor_GatesSimulation passed.");
         }
     }
 }
