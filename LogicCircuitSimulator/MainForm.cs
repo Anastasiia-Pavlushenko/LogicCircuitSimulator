@@ -31,11 +31,7 @@ namespace LogicCircuitSimulator
 
             UnitTest.TestCase_GateAndChangesSimulation();
             UnitTest.TestCase_6AndGateSimulation();
-
             UnitTest.TestCase_GateNotChangesSimulation();
-
-            UnitTest.TestCase_GateNandChangesSimulation();
-            UnitTest.TestCase_8NandGateSimulation();
         }
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
