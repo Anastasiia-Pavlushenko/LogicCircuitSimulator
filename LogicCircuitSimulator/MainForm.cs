@@ -26,6 +26,7 @@ namespace LogicCircuitSimulator
             UnitTest.TestCase_AndGateSimulation();
             UnitTest.TestCase_Nand_Nor_GatesSimulation();
             UnitTest.TestCase_Xnor_Xor_GatesSimulation();
+            UnitTest.TestCase_Fork_3Not_And_GatesSimulation();
         }
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
