@@ -316,14 +316,14 @@ namespace LogicCircuitSimulator
 
             cir.NextMoment();
             VerifyStates(
-                x1_out, "1", x2_out, "1", x3_out, "0",
+               x1_out, "1", x2_out, "1", x3_out, "0",
                nand_in0, "1", nand_in1, "1", nand_out, "0",
                nor_in0, "0", nor_in1, "0", nor_out, "1",
                y1_in, "1", y1.SimulationResult, "U");
 
             cir.NextMoment();
             VerifyStates(
-                x1_out, "1", x2_out, "1", x3_out, "0",
+               x1_out, "1", x2_out, "1", x3_out, "0",
                nand_in0, "1", nand_in1, "1", nand_out, "0",
                nor_in0, "0", nor_in1, "0", nor_out, "1",
                y1_in, "1", y1.SimulationResult, "1");
@@ -583,6 +583,202 @@ namespace LogicCircuitSimulator
                 not2_in, "0", not2_out, "1", y1_in, "1", y1.SimulationResult, "1");
 
             Console.WriteLine("TestCase_Fork_3Not_And_GatesSimulation passed.");
+        }
+
+        public static void TestCase_GateAndChangesSimulation()
+        {
+            Circuit c = new Circuit();
+            AND and = new AND();
+            c.AddElement(and);
+            Pin and_in0 = and.GetPin(PinSide.INPUT, 0);
+            Pin and_in1 = and.GetPin(PinSide.INPUT, 1);
+            Require.That(and.GetNumberOfPins(PinSide.INPUT) == 2);
+            Require.That(and.GetNumberOfPins(PinSide.OUTPUT) == 1);
+
+            InTerminal x1 = new InTerminal();
+            InTerminal x2 = new InTerminal();
+            c.AddElement(x1);
+            c.AddElement(x2);
+            Pin x1_out = x1.GetPin(PinSide.OUTPUT, 0);
+            Pin x2_out = x2.GetPin(PinSide.OUTPUT, 0);
+
+            c.Connect(x1_out, and_in0);
+            Require.That(and_in0.ConnectedPin == x1_out);
+            Require.That(x1_out.ConnectedPin == and_in0);
+            Require.That(and_in1.ConnectedPin == null);
+
+            c.SetNumberOfInputPins(and, 5);
+            Require.That(and.GetNumberOfPins(PinSide.INPUT) == 5);
+            Require.That(and.GetNumberOfPins(PinSide.OUTPUT) == 1);
+            Require.That(and_in0.ConnectedPin == x1_out);
+            Require.That(x1_out.ConnectedPin == and_in0);
+            for (byte i = 1; i < 5; i++)
+            {
+                Require.That(and.GetPin(PinSide.INPUT, i).ConnectedPin == null);
+            }
+
+            Pin and_in4 = and.GetPin(PinSide.INPUT, 4);
+            c.Connect(x2_out, and_in4);
+            Require.That(and_in4.ConnectedPin == x2_out);
+            Require.That(x2_out.ConnectedPin == and_in4);
+
+            c.SetNumberOfInputPins(and, 3);
+            Require.That(and.GetNumberOfPins(PinSide.INPUT) == 3);
+            Require.That(and_in0.ConnectedPin != null);
+            Require.That(x2_out.ConnectedPin == null);
+            for (byte i = 1; i < 3; i++)
+            {
+                Require.That(and.GetPin(PinSide.INPUT, i).ConnectedPin == null);
+            }
+            c.Disconnect(and_in0);
+            Require.That(x1_out.ConnectedPin == null);
+            Require.That(and_in0.ConnectedPin == null);
+
+            c.RemoveElement(and);
+        }
+
+        public static void TestCase_6AndGateSimulation()
+        {
+            void VerifyStates(Pin x1_out_pin, string x1_out_val,
+                              Pin x2_out_pin, string x2_out_val,
+                              Pin x3_out_pin, string x3_out_val,
+                              Pin x4_out_pin, string x4_out_val,
+                              Pin x5_out_pin, string x5_out_val,
+                              Pin x6_out_pin, string x6_out_val,
+
+                              Pin and_in0_pin, string and_in0_val,
+                              Pin and_in1_pin, string and_in1_val,
+                              Pin and_in2_pin, string and_in2_val,
+                              Pin and_in3_pin, string and_in3_val,
+                              Pin and_in4_pin, string and_in4_val,
+                              Pin and_in5_pin, string and_in5_val,
+                              Pin and_out_pin, string and_out_val,
+
+                              Pin y1_in_pin, string y1_in_val,
+                              Logic y1_res_real, string y1_res_exp)
+            {
+                Require.That(x1_out_pin.State.Value == Logic.StringToLogicValue(x1_out_val));
+                Require.That(x2_out_pin.State.Value == Logic.StringToLogicValue(x2_out_val));
+                Require.That(x3_out_pin.State.Value == Logic.StringToLogicValue(x3_out_val));
+                Require.That(x4_out_pin.State.Value == Logic.StringToLogicValue(x4_out_val));
+                Require.That(x5_out_pin.State.Value == Logic.StringToLogicValue(x5_out_val));
+                Require.That(x6_out_pin.State.Value == Logic.StringToLogicValue(x6_out_val));
+
+                Require.That(and_in0_pin.State.Value == Logic.StringToLogicValue(and_in0_val));
+                Require.That(and_in1_pin.State.Value == Logic.StringToLogicValue(and_in1_val));
+                Require.That(and_in2_pin.State.Value == Logic.StringToLogicValue(and_in2_val));
+                Require.That(and_in3_pin.State.Value == Logic.StringToLogicValue(and_in3_val));
+                Require.That(and_in4_pin.State.Value == Logic.StringToLogicValue(and_in4_val));
+                Require.That(and_in5_pin.State.Value == Logic.StringToLogicValue(and_in5_val));
+                Require.That(and_out_pin.State.Value == Logic.StringToLogicValue(and_out_val));
+
+                Require.That(y1_in_pin.State.Value == Logic.StringToLogicValue(y1_in_val));
+                Require.That(y1_res_real.Value == Logic.StringToLogicValue(y1_res_exp));
+            }
+
+            Circuit cir = new Circuit();
+            
+            InTerminal x1 = new InTerminal();
+            cir.AddElement(x1);
+            InTerminal x2 = new InTerminal();
+            cir.AddElement(x2);
+            InTerminal x3 = new InTerminal();
+            cir.AddElement(x3);
+            InTerminal x4 = new InTerminal();
+            cir.AddElement(x4);
+            InTerminal x5 = new InTerminal();
+            cir.AddElement(x5);
+            InTerminal x6 = new InTerminal();
+            cir.AddElement(x6);
+
+            AND and = new AND();
+            cir.AddElement(and);
+            cir.SetNumberOfInputPins(and, 6);
+            for(byte i = 1; i<6; i++)
+            {
+                Require.That(and.GetPin(PinSide.INPUT, i).ConnectedPin == null);
+            }
+
+            OutTerminal y1 = new OutTerminal();
+            cir.AddElement(y1);
+
+            Pin x1_out = x1.GetPin(PinSide.OUTPUT, 0);
+            Pin x2_out = x2.GetPin(PinSide.OUTPUT, 0);
+            Pin x3_out = x3.GetPin(PinSide.OUTPUT, 0);
+            Pin x4_out = x4.GetPin(PinSide.OUTPUT, 0);
+            Pin x5_out = x5.GetPin(PinSide.OUTPUT, 0);
+            Pin x6_out = x6.GetPin(PinSide.OUTPUT, 0);
+
+            Pin and_in0 = and.GetPin(PinSide.INPUT, 0);
+            Pin and_in1 = and.GetPin(PinSide.INPUT, 1);
+            Pin and_in2 = and.GetPin(PinSide.INPUT, 2);
+            Pin and_in3 = and.GetPin(PinSide.INPUT, 3);
+            Pin and_in4 = and.GetPin(PinSide.INPUT, 4);
+            Pin and_in5 = and.GetPin(PinSide.INPUT, 5);
+            Pin and_out = and.GetPin(PinSide.OUTPUT, 0);
+            Pin y1_in = y1.GetPin(PinSide.INPUT, 0);
+
+            cir.Connect(x1_out, and_in0);
+            cir.Connect(x2_out, and_in1);
+            cir.Connect(x3_out, and_in2);
+            cir.Connect(x4_out, and_in3);
+            cir.Connect(x5_out, and_in4);
+            cir.Connect(x6_out, and_in5);
+            cir.Connect(and_out, y1_in);
+
+            x1.SimulationInputValue = new Logic(LogicValue.LOGIC_1);
+            x2.SimulationInputValue = new Logic(LogicValue.LOGIC_1);
+            x3.SimulationInputValue = new Logic(LogicValue.LOGIC_1);
+            x4.SimulationInputValue = new Logic(LogicValue.LOGIC_1);
+            x5.SimulationInputValue = new Logic(LogicValue.LOGIC_1);
+            x6.SimulationInputValue = new Logic(LogicValue.LOGIC_1);
+
+            cir.RestartSimulation();
+            VerifyStates(x1_out, "U", x2_out, "U", x3_out, "U", x4_out, "U", x5_out, "U", x6_out, "U",
+                and_in0, "U", and_in1,"U" , and_in2, "U", and_in3, "U", and_in4, "U", and_in5, "U", and_out, "U", 
+                y1_in, "U", y1.SimulationResult, "U");
+
+            cir.NextMoment();
+            VerifyStates(x1_out, "1", x2_out, "1", x3_out, "1", x4_out, "1", x5_out, "1", x6_out, "1",
+                and_in0, "1", and_in1, "1", and_in2, "1", and_in3, "1", and_in4, "1", and_in5, "1", and_out, "U",
+                y1_in, "U", y1.SimulationResult, "U");
+
+            cir.NextMoment();
+            VerifyStates(x1_out, "1", x2_out, "1", x3_out, "1", x4_out, "1", x5_out, "1", x6_out, "1",
+                and_in0, "1", and_in1, "1", and_in2, "1", and_in3, "1", and_in4, "1", and_in5, "1", and_out, "1",
+                y1_in, "1", y1.SimulationResult, "U");
+
+            cir.NextMoment();
+            VerifyStates(x1_out, "1", x2_out, "1", x3_out, "1", x4_out, "1", x5_out, "1", x6_out, "1",
+                and_in0, "1", and_in1, "1", and_in2, "1", and_in3, "1", and_in4, "1", and_in5, "1", and_out, "1",
+                y1_in, "1", y1.SimulationResult, "1");
+            Console.WriteLine("TestCase_6AndGateSimulation passed.");
+        }
+
+        public static void TestCase_GateNotChangesSimulation()
+        {
+            Circuit c = new Circuit();
+            NOT not = new NOT();
+            c.AddElement(not);
+            Pin not_in = not.GetPin(PinSide.INPUT, 0);
+            Pin not_out = not.GetPin(PinSide.OUTPUT, 0);
+            Require.That(not.GetNumberOfPins(PinSide.INPUT) == 1);
+            Require.That(not.GetNumberOfPins(PinSide.OUTPUT) == 1);
+
+            InTerminal x1 = new InTerminal();
+            c.AddElement(x1);
+            Pin x1_out = x1.GetPin(PinSide.OUTPUT, 0);
+
+            c.Connect(x1_out, not_in);
+            Require.That(not_in.ConnectedPin == x1_out);
+            Require.That(x1_out.ConnectedPin == not_in);
+            
+            c.Disconnect(not_in);
+            Require.That(x1_out.ConnectedPin == null);
+            Require.That(not_in.ConnectedPin == null);
+
+            c.RemoveElement(not);
+            Console.WriteLine("TestCase_GateNotChangesSimulation.");
         }
     }
 }
