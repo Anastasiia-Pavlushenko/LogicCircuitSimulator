@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace LogicCircuitSimulator
 {
-    public partial class CreateGate : Form
+    public partial class CreateConnectionDialog : Form
     {
-        public CreateGate()
+        public CreateConnectionDialog()
         {
             InitializeComponent();
         }
