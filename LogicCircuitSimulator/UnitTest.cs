@@ -11,7 +11,7 @@ namespace LogicCircuitSimulator
                 if (!expression) throw new InvalidProgramException(exceptionMessage);
             }
         }
-        public static void TestCase_2AND()
+        public static void TestCase_LogicOperatorAnd()
         {
             Logic l_0 = new Logic(LogicValue.LOGIC_0);
             Logic l_1 = new Logic(LogicValue.LOGIC_1);
@@ -53,9 +53,9 @@ namespace LogicCircuitSimulator
             //1 AND 1
             result = l_1 & l_1;
             Require.That(result.Value == LogicValue.LOGIC_1, "Result of 1 AND 1 isn't 1.");
-            Console.WriteLine("AND passed.");
+            Console.WriteLine("TestCase_LogicOperatorAnd passed.");
         }
-        public static void TestCase_2OR()
+        public static void TestCase_LogicOperatorOr()
         {
             Logic l_0 = new Logic(LogicValue.LOGIC_0);
             Logic l_1 = new Logic(LogicValue.LOGIC_1);
@@ -98,9 +98,9 @@ namespace LogicCircuitSimulator
             result = l_1 | l_1;
             Require.That(result.Value == LogicValue.LOGIC_1, "Result of 1 OR 1 isn't 1.");
 
-            Console.WriteLine("OR passed.");
+            Console.WriteLine("TestCase_LogicOperatorOr passed.");
         }
-        public static void TestCase_2XOR()
+        public static void TestCase_LogicOperatorXor()
         {
             Logic l_0 = new Logic(LogicValue.LOGIC_0);
             Logic l_1 = new Logic(LogicValue.LOGIC_1);
@@ -143,9 +143,9 @@ namespace LogicCircuitSimulator
             result = l_1 ^ l_1;
             Require.That(result.Value == LogicValue.LOGIC_0, "Result of 1 XOR 1 isn't 0.");
 
-            Console.WriteLine("XOR passed.");
+            Console.WriteLine("TestCase_LogicOperatorXor passed.");
         }
-        public static void TestCase_NOT()
+        public static void TestCase_LogicOperatorNot()
         {
             Logic l_0 = new Logic(LogicValue.LOGIC_0);
             Logic l_1 = new Logic(LogicValue.LOGIC_1);
@@ -164,7 +164,7 @@ namespace LogicCircuitSimulator
             result = !l_1;
             Require.That(result.Value == LogicValue.LOGIC_0, "Result of NOT 1 isn't 0.");
 
-            Console.WriteLine("NOT passed.");
+            Console.WriteLine("TestCase_LogicOperatorNot passed.");
         }
 
         public static void TestCase_AndGateSimulation()
@@ -583,7 +583,7 @@ namespace LogicCircuitSimulator
             Console.WriteLine("TestCase_Fork_3Not_And_GatesSimulation passed.");
         }
 
-        public static void TestCase_GateAndChangesSimulation()
+        public static void TestCase_SetNumberOfInputPinsAnd()
         {
             Circuit c = new Circuit();
             AND and = new AND();
@@ -633,7 +633,7 @@ namespace LogicCircuitSimulator
             Require.That(and_in0.ConnectedPin == null);
 
             c.RemoveElement(and);
-            Console.WriteLine("TestCase_GateAndChangesSimulation passed.");
+            Console.WriteLine("TestCase_SetNumberOfInputPinsAnd passed.");
         }
 
         public static void TestCase_6AndGateSimulation()
@@ -754,7 +754,7 @@ namespace LogicCircuitSimulator
             Console.WriteLine("TestCase_6AndGateSimulation passed.");
         }
 
-        public static void TestCase_GateNotChangesSimulation()
+        public static void TestCase_ConnectDisconnectOfNot()
         {
             Circuit c = new Circuit();
             NOT not = new NOT();
@@ -777,10 +777,10 @@ namespace LogicCircuitSimulator
             Require.That(not_in.ConnectedPin == null);
 
             c.RemoveElement(not);
-            Console.WriteLine("TestCase_GateNotChangesSimulation passed.");
+            Console.WriteLine("TestCase_ConnectDisconnectOfNot passed.");
         }
 
-        public static void TestCase_GateNandChangesSimulation()
+        public static void TestCase_SetNumberOfInputPinsNand()
         {
             Circuit c = new Circuit();
             NAND nand = new NAND();
@@ -835,7 +835,7 @@ namespace LogicCircuitSimulator
             Require.That(nand_in0.ConnectedPin == null);
 
             c.RemoveElement(nand);
-            Console.WriteLine("TestCase_GateNandChangesSimulation passed.");
+            Console.WriteLine("TestCase_SetNumberOfInputPinsNand passed.");
         }
 
         public static void TestCase_8NandGateSimulation()

@@ -19,22 +19,22 @@ namespace LogicCircuitSimulator
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            UnitTest.TestCase_2AND();
-            UnitTest.TestCase_2OR();
-            UnitTest.TestCase_2XOR();
-            UnitTest.TestCase_NOT();
+            UnitTest.TestCase_LogicOperatorAnd();
+            UnitTest.TestCase_LogicOperatorOr();
+            UnitTest.TestCase_LogicOperatorXor();
+            UnitTest.TestCase_LogicOperatorNot();
 
             UnitTest.TestCase_AndGateSimulation();
             UnitTest.TestCase_Nand_Nor_GatesSimulation();
             UnitTest.TestCase_Xnor_Xor_GatesSimulation();
             UnitTest.TestCase_Fork_3Not_And_GatesSimulation();
 
-            UnitTest.TestCase_GateAndChangesSimulation();
+            UnitTest.TestCase_SetNumberOfInputPinsAnd();
             UnitTest.TestCase_6AndGateSimulation();
 
-            UnitTest.TestCase_GateNotChangesSimulation();
+            UnitTest.TestCase_ConnectDisconnectOfNot();
 
-            UnitTest.TestCase_GateNandChangesSimulation();
+            UnitTest.TestCase_SetNumberOfInputPinsNand();
             UnitTest.TestCase_8NandGateSimulation();
         }
 
