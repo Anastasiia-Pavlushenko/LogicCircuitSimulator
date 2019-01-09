@@ -9,7 +9,7 @@ using System.Runtime.Serialization;
 
 namespace LogicCircuitSimulator
 {
-    abstract class VisualElement
+    abstract class VisualElementDeprecated
     {
         public enum Elements
         {
@@ -28,7 +28,7 @@ namespace LogicCircuitSimulator
         public Bitmap ElementImage { get; private set; }
         protected Element Element { get; private set; }
 
-        protected VisualElement()
+        protected VisualElementDeprecated()
         {
             visual_input_pins = new List<Point>();
             visual_output_pins = new List<Point>();
@@ -37,7 +37,7 @@ namespace LogicCircuitSimulator
 
         
 
-    abstract class VisualTerminal : VisualElement
+    abstract class VisualTerminal : VisualElementDeprecated
     {
         protected VisualTerminal()
             : base()
@@ -69,7 +69,7 @@ namespace LogicCircuitSimulator
             }
     }
 
-    abstract class VisualGate : VisualElement
+    abstract class VisualGate : VisualElementDeprecated
     {
         protected VisualGate()
             : base()
@@ -675,6 +675,20 @@ namespace LogicCircuitSimulator
     static class GUI
     {
         public static Graphics g_graphics;
+        public static Circuit g_circuit = new Circuit();
+        public static List<Visual.Element> elements;
+        public static Dictionary<Visual.Pin, Visual.Pin> visual_connections;
+
+        public static void AddElement(Visual.Element new_element)
+        {
+            elements.Add(new_element);
+        }
+
+        public static void RemoveElement(Visual.Element element)
+        {
+            elements.Remove(element);
+            // TODO: Handle connections with this element
+        }
 
         public static void DrawActiveLine(PointF p1, PointF p2)
         {
@@ -684,6 +698,458 @@ namespace LogicCircuitSimulator
         public static void DrawInactiveLine(PointF p1, PointF p2)
         {
             g_graphics.DrawLine(Pens.Black, p1, p2);
+        }
+
+        public static void DrawConnection(Pin from, Pin to)
+        {
+            //GUI.DrawActiveLine(el1.LogicElement)
+        }
+
+        public class ConnectableImages
+        {
+            abstract public class ConnectableImage
+            {
+                public virtual Bitmap Image { get; }
+                public virtual Point[] InputPoints { get; }
+                public virtual Point[] OutputPoints { get; }
+            }
+
+            public class AND2 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._2AND;
+                public override Point[] InputPoints { get; } = { new Point(0, 10), new Point(0, 20) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 15) };
+            }
+
+            public class NAND2 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._2NAND;
+                public override Point[] InputPoints { get; } = { new Point(0, 10), new Point(0, 20) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 15) };
+            }
+
+            public class OR2 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._2OR;
+                public override Point[] InputPoints { get; } = { new Point(0, 10), new Point(0, 20) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 15) };
+            }
+
+            public class NOR2 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._2NOR;
+                public override Point[] InputPoints { get; } = { new Point(0, 10), new Point(0, 20) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 15) };
+            }
+
+            public class XOR2 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._2XOR;
+                public override Point[] InputPoints { get; } = { new Point(0, 10), new Point(0, 20) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 15) };
+            }
+
+            public class XNOR2 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._2XNOR;
+                public override Point[] InputPoints { get; } = { new Point(0, 10), new Point(0, 20) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 15) };
+            }
+
+            public class AND3 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._3AND;
+                public override Point[] InputPoints { get; } = { new Point(0, 8), new Point(0, 15), new Point(0, 23) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 15) };
+            }
+
+            public class NAND3 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._3NAND;
+                public override Point[] InputPoints { get; } = { new Point(0, 8), new Point(0, 15), new Point(0, 23) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 15) };
+            }
+
+            public class OR3 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._3OR;
+                public override Point[] InputPoints { get; } = { new Point(0, 8), new Point(0, 15), new Point(0, 23) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 15) };
+            }
+
+            public class NOR3 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._3NOR;
+                public override Point[] InputPoints { get; } = { new Point(0, 8), new Point(0, 15), new Point(0, 23) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 15) };
+            }
+
+            public class XOR3 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._3XOR;
+                public override Point[] InputPoints { get; } = { new Point(0, 8), new Point(0, 15), new Point(0, 23) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 15) };
+            }
+
+            public class XNOR3 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._3XNOR;
+                public override Point[] InputPoints { get; } = { new Point(0, 8), new Point(0, 15), new Point(0, 23) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 15) };
+            }
+
+            public class AND4 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._4AND;
+                public override Point[] InputPoints { get; } = { new Point(0, 6), new Point(0, 12), new Point(0, 19), new Point(0, 25) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 15) };
+            }
+
+            public class NAND4 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._4NAND;
+                public override Point[] InputPoints { get; } = { new Point(0, 6), new Point(0, 12), new Point(0, 19), new Point(0, 25) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 15) };
+            }
+
+            public class OR4 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._4OR;
+                public override Point[] InputPoints { get; } = { new Point(0, 6), new Point(0, 12), new Point(0, 19), new Point(0, 25) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 15) };
+            }
+
+            public class NOR4 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._4NOR;
+                public override Point[] InputPoints { get; } = { new Point(0, 6), new Point(0, 12), new Point(0, 19), new Point(0, 25) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 15) };
+            }
+
+            public class XOR4 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._4XOR;
+                public override Point[] InputPoints { get; } = { new Point(0, 6), new Point(0, 12), new Point(0, 19), new Point(0, 25) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 15) };
+            }
+
+            public class XNOR4 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._4XNOR;
+                public override Point[] InputPoints { get; } = { new Point(0, 6), new Point(0, 12), new Point(0, 19), new Point(0, 25) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 15) };
+            }
+
+            public class AND5 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._5AND;
+                public override Point[] InputPoints { get; } = { new Point(0, 4), new Point(0, 10),
+                                                        new Point(0, 16), new Point(0, 22), new Point(0, 27) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 15) };
+            }
+
+            public class NAND5 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._5NAND;
+                public override Point[] InputPoints { get; } = { new Point(0, 4), new Point(0, 10),
+                                                        new Point(0, 16), new Point(0, 22), new Point(0, 27) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 15) };
+            }
+
+            public class OR5 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._5OR;
+                public override Point[] InputPoints { get; } = { new Point(0, 4), new Point(0, 10),
+                                                        new Point(0, 16), new Point(0, 22), new Point(0, 27) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 15) };
+            }
+
+            public class NOR5 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._5NOR;
+                public override Point[] InputPoints { get; } = { new Point(0, 4), new Point(0, 10),
+                                                        new Point(0, 16), new Point(0, 22), new Point(0, 27) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 15) };
+            }
+
+            public class XOR5 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._5XOR;
+                public override Point[] InputPoints { get; } = { new Point(0, 4), new Point(0, 10),
+                                                        new Point(0, 16), new Point(0, 22), new Point(0, 27) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 15) };
+            }
+
+            public class XNOR5 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._5XNOR;
+                public override Point[] InputPoints { get; } = { new Point(0, 4), new Point(0, 10),
+                                                        new Point(0, 16), new Point(0, 22), new Point(0, 27) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 15) };
+            }
+
+            public class AND6 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._6AND;
+                public override Point[] InputPoints { get; } = { new Point(0, 6), new Point(0, 12), new Point(0, 18),
+                                                        new Point(0, 24), new Point(0, 29), new Point(0, 35) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 20) };
+            }
+
+            public class NAND6 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._6NAND;
+                public override Point[] InputPoints { get; } = { new Point(0, 6), new Point(0, 12), new Point(0, 18),
+                                                        new Point(0, 24), new Point(0, 29), new Point(0, 35) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 20) };
+            }
+
+            public class OR6 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._6OR;
+                public override Point[] InputPoints { get; } = { new Point(0, 6), new Point(0, 12), new Point(0, 18),
+                                                        new Point(0, 24), new Point(0, 29), new Point(0, 35) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 20) };
+            }
+
+            public class NOR6 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._6NOR;
+                public override Point[] InputPoints { get; } = { new Point(0, 6), new Point(0, 12), new Point(0, 18),
+                                                        new Point(0, 24), new Point(0, 29), new Point(0, 35) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 20) };
+            }
+
+            public class XOR6 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._6XOR;
+                public override Point[] InputPoints { get; } = { new Point(0, 6), new Point(0, 12), new Point(0, 18),
+                                                        new Point(0, 24), new Point(0, 29), new Point(0, 35) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 20) };
+            }
+
+            public class XNOR6 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._6XNOR;
+                public override Point[] InputPoints { get; } = { new Point(0, 6), new Point(0, 12), new Point(0, 18),
+                                                        new Point(0, 24), new Point(0, 29), new Point(0, 35) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 20) };
+            }
+
+            public class AND7 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._7AND;
+                public override Point[] InputPoints { get; } = { new Point(0, 6), new Point(0, 12), new Point(0, 18),
+                                                        new Point(0, 23), new Point(0, 28), new Point(0, 34), new Point(0, 39) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 23) };
+            }
+
+            public class NAND7 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._7NAND;
+                public override Point[] InputPoints { get; } = { new Point(0, 6), new Point(0, 12), new Point(0, 18),
+                                                        new Point(0, 23), new Point(0, 28), new Point(0, 34), new Point(0, 39) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 23) };
+            }
+
+            public class OR7 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._7OR;
+                public override Point[] InputPoints { get; } = { new Point(0, 6), new Point(0, 12), new Point(0, 18),
+                                                        new Point(0, 23), new Point(0, 28), new Point(0, 34), new Point(0, 39) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 23) };
+            }
+
+            public class NOR7 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._7NOR;
+                public override Point[] InputPoints { get; } = { new Point(0, 6), new Point(0, 12), new Point(0, 18),
+                                                        new Point(0, 23), new Point(0, 28), new Point(0, 34), new Point(0, 39) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 23) };
+            }
+
+            public class XOR7 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._7XOR;
+                public override Point[] InputPoints { get; } = { new Point(0, 6), new Point(0, 12), new Point(0, 18),
+                                                        new Point(0, 23), new Point(0, 28), new Point(0, 34), new Point(0, 39) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 23) };
+            }
+
+            public class XNOR7 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._7XNOR;
+                public override Point[] InputPoints { get; } = { new Point(0, 6), new Point(0, 12), new Point(0, 18),
+                                                        new Point(0, 23), new Point(0, 28), new Point(0, 34), new Point(0, 39) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 23) };
+            }
+
+            public class AND8 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._8AND;
+                public override Point[] InputPoints { get; } = { new Point(0, 4), new Point(0, 10), new Point(0, 16), new Point(0, 21),
+                                                        new Point(0, 26), new Point(0, 32), new Point(0, 37), new Point(0, 42) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 24) };
+            }
+
+            public class NAND8 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._8NAND;
+                public override Point[] InputPoints { get; } = { new Point(0, 4), new Point(0, 10), new Point(0, 16), new Point(0, 21),
+                                                        new Point(0, 26), new Point(0, 32), new Point(0, 37), new Point(0, 42) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 24) };
+            }
+
+            public class OR8 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._8OR;
+                public override Point[] InputPoints { get; } = { new Point(0, 4), new Point(0, 10), new Point(0, 16), new Point(0, 21),
+                                                        new Point(0, 26), new Point(0, 32), new Point(0, 37), new Point(0, 42) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 24) };
+            }
+
+            public class NOR8 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._8NOR;
+                public override Point[] InputPoints { get; } = { new Point(0, 4), new Point(0, 10), new Point(0, 16), new Point(0, 21),
+                                                        new Point(0, 26), new Point(0, 32), new Point(0, 37), new Point(0, 42) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 24) };
+            }
+
+            public class XOR8 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._8XOR;
+                public override Point[] InputPoints { get; } = { new Point(0, 4), new Point(0, 10), new Point(0, 16), new Point(0, 21),
+                                                        new Point(0, 26), new Point(0, 32), new Point(0, 37), new Point(0, 42) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 24) };
+            }
+
+            public class XNOR8 : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources._8XNOR;
+                public override Point[] InputPoints { get; } = { new Point(0, 4), new Point(0, 10), new Point(0, 16), new Point(0, 21),
+                                                        new Point(0, 26), new Point(0, 32), new Point(0, 37), new Point(0, 42) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 24) };
+            }
+
+            public class NOT : ConnectableImage
+            {
+                public override Bitmap Image { get; } = Properties.Resources.INV;
+                public override Point[] InputPoints { get; } = { new Point(0, 12) };
+                public override Point[] OutputPoints { get; } = { new Point(40, 12) };
+            }
+            
+            // TODO: Implement FORKs
+        }
+
+        public class Visual
+        {
+            public class Pin
+            {
+                public Pin(Visual.Element parent)
+                {
+                    Parent = parent;
+                }
+
+                //public Point Coords { get { return Parent.PictureBox.Location + Parent.ImageData.InputPoints[]} }
+
+                public Visual.Pin ConnectedPin { get; set; }
+                public Visual.Element Parent { get; private set; }
+            }
+
+            public abstract class Element
+            {
+                public LogicCircuitSimulator.Element LogicElement { get; }
+                public ConnectableImages.ConnectableImage ImageData { get; }
+                public System.Windows.Forms.PictureBox PictureBox { get; }
+                public List<Visual.Pin> InputPins = new List<Pin>();
+                public List<Visual.Pin> OutputPins = new List<Pin>();
+
+                protected System.Windows.Forms.PictureBox picture_box;
+                protected LogicCircuitSimulator.Element logic_element;
+                protected ConnectableImages.ConnectableImage image_data;
+            }
+
+            public abstract class Gate : Element
+            {
+                protected Gate()
+                    : base()
+                { }
+            }
+
+            public abstract class MultipleInputGate : Gate
+            {
+                protected MultipleInputGate()
+                    : base()
+                { }
+            }
+
+            public class AND : MultipleInputGate
+            {
+                public AND()
+                    : base()
+                {
+                    logic_element = new LogicCircuitSimulator.AND();
+                    g_circuit.AddElement(logic_element);
+                    image_data = new ConnectableImages.AND2();
+                    picture_box = new System.Windows.Forms.PictureBox
+                    {
+                        Name = elements.Count.ToString(),
+                        Location = new Point(100, 100),
+                        Image = ImageData.Image
+                    };
+                }
+            }
+
+            public class NAND : MultipleInputGate
+            {
+                public NAND()
+                    : base()
+                {
+                    logic_element = new LogicCircuitSimulator.NAND();
+                    image_data = new ConnectableImages.NAND2();
+                }
+            }
+
+            public class OR : MultipleInputGate
+            {
+                public OR()
+                    : base()
+                {
+                    logic_element = new LogicCircuitSimulator.OR();
+                    image_data = new ConnectableImages.OR2();
+                }
+            }
+
+            public class NOR : MultipleInputGate
+            {
+                public NOR()
+                    : base()
+                {
+                    logic_element = new LogicCircuitSimulator.NOR();
+                    image_data = new ConnectableImages.NOR2();
+                }
+            }
+
+            public class XOR : MultipleInputGate
+            {
+                public XOR()
+                    : base()
+                {
+                    logic_element = new LogicCircuitSimulator.XOR();
+                    image_data = new ConnectableImages.XOR2();
+                }
+            }
+
+            public class XNOR : MultipleInputGate
+            {
+                public XNOR()
+                    : base()
+                {
+                    logic_element = new LogicCircuitSimulator.XNOR();
+                    image_data = new ConnectableImages.XNOR2();
+                }
+            }
         }
     }
 }
